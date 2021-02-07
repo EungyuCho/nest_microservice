@@ -114,13 +114,6 @@ export class ProductService {
         };
       }
 
-      if (!product) {
-        return {
-          ok: false,
-          error: 'Product not found',
-        };
-      }
-
       if (patchProductDto.title) {
         product.title = patchProductDto.title;
       }
@@ -137,6 +130,29 @@ export class ProductService {
       return {
         ok: false,
         error: 'Could not load Product',
+      };
+    }
+  }
+
+  async deleteProduct(id: number): Promise<CoreOutput> {
+    try {
+      const product = await this.products.findOne({ id });
+
+      if (!product) {
+        return {
+          ok: false,
+          error: 'Product not found',
+        };
+      }
+
+      await this.products.delete(id);
+      return {
+        ok: true,
+      };
+    } catch {
+      return {
+        ok: false,
+        error: 'Could not delete Product',
       };
     }
   }

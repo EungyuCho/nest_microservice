@@ -1,7 +1,5 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
 import * as Joi from 'joi';
-import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ProductModule } from './product/product.module';
@@ -12,7 +10,7 @@ import { CommonModule } from './common/common.module';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: '.env.dev',
+      envFilePath: process.env.NODE_ENV === 'dev' ? '.env.dev' : '.env.test',
       validationSchema: Joi.object({
         DB_HOST: Joi.string()
           .valid()
@@ -40,12 +38,12 @@ import { CommonModule } from './common/common.module';
       database: process.env.DB_NAME,
       logging: true,
       entities: [Product],
-      synchronize: true,
+      synchronize: process.env.NODE_ENV !== 'prod',
     }),
     ProductModule,
     CommonModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}
