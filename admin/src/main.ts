@@ -10,6 +10,10 @@ async function bootstrap() {
       transform: true,
     }),
   );
-  await app.listen(3000);
+  app.enableCors({
+    origin: 'http://localhost"4200',
+  });
+  app.setGlobalPrefix('api');
+  await app.listen(8000);
 }
 bootstrap();

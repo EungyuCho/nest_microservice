@@ -3,9 +3,9 @@
 ## 기능
 ### 상품의 CRUD를 해주는 관리자 모듈
 
-### port: 3000
+### port: 8000
 
-### route: /product
+### route: /api/product
 
 
 ## 테스트
