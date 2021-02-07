@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  Inject,
   Param,
   Patch,
   Post,
@@ -15,13 +16,19 @@ import { CreateProductDto } from './dtos/create-product.dto';
 import { GetProductOutput } from './dtos/get-podcast.dto';
 import { PatchProductDto } from './dtos/patch-product.dto';
 import { PutProductDto } from './dtos/put-product.dto';
+import { PRODUCT_SERVICE } from '../constant';
+import { ClientProxy } from '@nestjs/microservices';
 
 @Controller('products')
 export class ProductController {
-  constructor(private readonly productService: ProductService) {}
+  constructor(
+    private readonly productService: ProductService,
+    @Inject(PRODUCT_SERVICE) private readonly client: ClientProxy,
+  ) {}
 
   @Get()
   async allProducts(): Promise<AllProductsOutput> {
+    this.client.emit('hello', 'hello from RabbitMQ!');
     return this.productService.allProducts();
   }
 
