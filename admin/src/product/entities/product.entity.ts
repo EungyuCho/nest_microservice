@@ -1,10 +1,8 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity } from 'typeorm';
+import { CoreEntity } from '../../common/entities/core.entity';
 
 @Entity()
-export class Product {
-  @PrimaryGeneratedColumn()
-  id: number;
-
+export class Product extends CoreEntity {
   @Column()
   title: string;
 

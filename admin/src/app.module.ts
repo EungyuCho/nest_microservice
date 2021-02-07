@@ -6,6 +6,7 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ProductModule } from './product/product.module';
 import { Product } from './product/entities/product.entity';
+import { CommonModule } from './common/common.module';
 
 @Module({
   imports: [
@@ -42,6 +43,7 @@ import { Product } from './product/entities/product.entity';
       synchronize: true,
     }),
     ProductModule,
+    CommonModule,
   ],
   controllers: [AppController],
   providers: [AppService],
