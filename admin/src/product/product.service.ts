@@ -164,4 +164,28 @@ export class ProductService {
       };
     }
   }
+
+  async increaseLikes(id: number): Promise<CoreOutput> {
+    try {
+      const product = await this.products.findOne({ id });
+
+      if (!product) {
+        return {
+          ok: false,
+          error: 'Product not found',
+        };
+      }
+
+      product.likes = product.likes + 1;
+      await this.products.save(product);
+      return {
+        ok: true,
+      };
+    } catch {
+      return {
+        ok: false,
+        error: 'Could not increase Likes',
+      };
+    }
+  }
 }

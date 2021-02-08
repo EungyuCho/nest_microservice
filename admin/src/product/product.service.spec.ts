@@ -309,4 +309,49 @@ describe('ProductService', () => {
       });
     });
   });
+
+  describe('increaseLikes', () => {
+    it('should fail if product not found', async () => {
+      productRepository.findOne.mockResolvedValue(undefined);
+
+      const result = await service.increaseLikes(productId);
+      expect(result).toEqual({
+        ok: false,
+        error: 'Product not found',
+      });
+    });
+
+    it('should be increase likes', async () => {
+      const increaseDataTarget = {
+        title: 'dummy',
+        image: 'already exist!',
+        likes: 0,
+      };
+      const increasedDataTarget = {
+        title: 'dummy',
+        image: 'already exist!',
+        likes: 1,
+      };
+      productRepository.findOne.mockResolvedValue(increaseDataTarget);
+      productRepository.save.mockResolvedValue(increasedDataTarget);
+      const result = await service.increaseLikes(productId);
+
+      expect(productRepository.findOne).toHaveBeenCalledTimes(1);
+      expect(productRepository.findOne).toHaveBeenCalledWith({ id: productId });
+      expect(productRepository.save).toHaveBeenCalledTimes(1);
+      expect(productRepository.save).toHaveBeenCalledWith(increasedDataTarget);
+      expect(result).toEqual({
+        ok: true,
+      });
+    });
+
+    it('should fail on exception', async () => {
+      productRepository.findOne.mockRejectedValue(new Error());
+      const result = await service.increaseLikes(productId);
+      expect(result).toEqual({
+        ok: false,
+        error: 'Could not increase Likes',
+      });
+    });
+  });
 });

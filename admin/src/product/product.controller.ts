@@ -84,4 +84,9 @@ export class ProductController {
     this.client.emit('product_deleted', id);
     return deleteProductOutput;
   }
+
+  @Post(':id/like')
+  async like(@Param('id') id: number): Promise<CoreOutput> {
+    return this.productService.increaseLikes(id);
+  }
 }
