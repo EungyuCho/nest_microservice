@@ -6,6 +6,7 @@ import { ProductModule } from './product/product.module';
   imports: [
     MongooseModule.forRoot('mongodb://localhost:27017/nest_main', {
       autoCreate: true,
+      useFindAndModify: false,
     }),
     ProductModule,
   ],

@@ -3,7 +3,10 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Product } from './entities/product.entity';
 import { Repository } from 'typeorm';
 import { AllProductsOutput } from './dtos/all-products.dto';
-import { CreateProductDto } from './dtos/create-product.dto';
+import {
+  CreateProductDto,
+  CreateProductOutput,
+} from './dtos/create-product.dto';
 import { CoreOutput } from '../common/dtos/output.dto';
 import { GetProductOutput } from './dtos/get-podcast.dto';
 import { PutProductDto } from './dtos/put-product.dto';
@@ -29,7 +32,10 @@ export class ProductService {
     }
   }
 
-  async createProduct({ title, image }: CreateProductDto): Promise<CoreOutput> {
+  async createProduct({
+    title,
+    image,
+  }: CreateProductDto): Promise<CreateProductOutput> {
     try {
       const exist = await this.products.findOne({ title });
 
@@ -40,10 +46,12 @@ export class ProductService {
         };
       }
 
-      await this.products.save(this.products.create({ title, image }));
+      const product = this.products.create({ title, image });
+      await this.products.save(product);
 
       return {
         ok: true,
+        product: product,
       };
     } catch {
       return {

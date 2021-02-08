@@ -63,7 +63,7 @@ describe('ProductService', () => {
       expect(productRepository.create).toHaveBeenCalledTimes(1);
       expect(productRepository.create).toHaveBeenCalledWith(createProductArgs);
 
-      expect(result).toEqual({ ok: true });
+      expect(result).toEqual({ ok: true, product: createProductArgs });
     });
 
     it('should fail if product exist', async () => {
@@ -287,14 +287,13 @@ describe('ProductService', () => {
 
     it('should be delete', async () => {
       productRepository.findOne.mockResolvedValue(dummyData);
-
       const result = await service.deleteProduct(productId);
 
       expect(productRepository.findOne).toHaveBeenCalledTimes(1);
       expect(productRepository.findOne).toHaveBeenCalledWith({ id: productId });
 
       expect(productRepository.delete).toHaveBeenCalledTimes(1);
-      expect(productRepository.delete).toHaveBeenCalledWith(dummyData);
+      expect(productRepository.delete).toHaveBeenCalledWith(productId);
 
       expect(result).toEqual({
         ok: true,
