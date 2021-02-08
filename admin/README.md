@@ -5,7 +5,7 @@
 
 ### port: 8000
 
-### route: /api/product
+### route: /api/products
 
 
 ## 테스트
